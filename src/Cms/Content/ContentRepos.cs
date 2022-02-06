@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace Cms.Content
 {
-    public class ContentRepos : PostgreSQLQueryableRepository<ContentData, Guid>
+    public class ContentRepos : QueryableRepository<ContentData, Guid>
     { 
         public ContentRepos(IConfiguration configuration) : base(configuration)
         {

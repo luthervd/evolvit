@@ -4,7 +4,7 @@
     {
         Task<ContentData> Create(ContentData contentData); 
 
-        Task<ContentData> Get(Guid id);
+        Task<ContentData?> Get(Guid id);
 
         Task<ICollection<ContentData>> GetPaged(int pageNumber, int pageSize);
     }

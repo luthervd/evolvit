@@ -11,11 +11,11 @@ namespace Cms.Migrations
             configBuilder.AddEnvironmentVariables();
             var config = configBuilder.Build();
             var configSection = config.GetSection("EVOLVIT");
-            var connString = $"Server={configSection["host"]};Port=5432;Database=evolvit;User Id={configSection["User"]};Password={configSection["Password"]};";
+            var connString = $"Server={configSection["host"]};Port=3306;Database=evolvit;User ID={configSection["User"]};Password={configSection["Password"]};";
             var serviceCollection = new ServiceCollection();
             serviceCollection
                 .AddFluentMigratorCore()
-                .ConfigureRunner(rb => rb.AddPostgres()
+                .ConfigureRunner(rb => rb.AddMySql5()
                                         .WithGlobalConnectionString(connString)
                                         .ScanIn(typeof(Program).Assembly).For.Migrations())
                                         .AddLogging(lb => lb.AddFluentMigratorConsole());

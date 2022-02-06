@@ -19,22 +19,14 @@ namespace Cms.Shared
         public int PageSize { get; protected set; }
         public int PageNumber { get; protected set; }
 
-        public async Task<IQueryResult<ICollection<TEntity>>> Query<T>(IDbConnection connection, IEnumerable<T> args = null)
+        public async Task<IQueryResult<ICollection<TEntity>>> Query(IDbConnection connection)
         {
             SetQuerySizeIfEmpty();
             var skip = (PageNumber -1) * PageSize;
             var take = PageSize;
             var parameters = new DynamicParameters(new {skip = skip, take = take });
             var result = await connection.QueryAsync<TEntity>(SelectQueryStatement, parameters);
-            if(result == null)
-            {
-                result = new List<TEntity>();
-            }
-            else
-            {
-                result = result.ToList();
-            }
-            return new PagedQueryResult<TEntity,TId>(result as ICollection<TEntity>, true, PageSize, PageNumber);
+            return new PagedQueryResult<TEntity,TId>(result as ICollection<TEntity> ?? new List<TEntity>(), true, PageSize, PageNumber);
         }
 
         public void RegisterPageArgs(int page, int pageSize)

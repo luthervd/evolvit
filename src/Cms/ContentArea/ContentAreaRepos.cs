@@ -3,7 +3,7 @@ using Npgsql;
 using Dapper;
 namespace Cms.ContentArea
 {
-    public class ContentAreaRepos : PostgreSQLQueryableRepository<ContentAreaDescription, Guid>
+    public class ContentAreaRepos : QueryableRepository<ContentAreaDescription, Guid>
     {
 
         public ContentAreaRepos(IConfiguration configuration) : base(configuration) { }

@@ -3,7 +3,7 @@ using Dapper;
 
 namespace Cms.ContentTemplate
 {
-    public class ContentFieldRepos : PostgreSQLQueryableRepository<ContentField, int>
+    public class ContentFieldRepos : QueryableRepository<ContentField, int>
     {
         public ContentFieldRepos(IConfiguration configuration) : base(configuration)
         {

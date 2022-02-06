@@ -5,7 +5,5 @@
         Task<IQueryResult<IEntity<TId>>> QueryforSingle(IEntityQuery<T,TId> queryProvider);
 
         Task<IQueryResult<ICollection<T>>> QueryforMany(IEntityCollectionQuery<T,TId> queryProvider);
-
-        Task<IQueryResult<ICollection<T>>> QueryforMany<TArg>(IEntityCollectionQuery<T, TId> queryProvider, IEnumerable<TArg> args);
     }
 }

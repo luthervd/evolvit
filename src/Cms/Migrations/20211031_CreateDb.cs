@@ -23,7 +23,7 @@ namespace Cms.Migrations
                 .WithColumn("id").AsGuid().PrimaryKey()
                 .WithColumn("name").AsString(256)
                 .WithColumn("description").AsString()
-                .WithColumn("data").AsCustom("jsonb")
+                .WithColumn("data").AsCustom("JSON")
                 .WithColumn("created").AsDateTime().WithDefaultValue(SystemMethods.CurrentDateTime).NotNullable();
 
             Create.Table(MigrationGlobalConsts.ContentTemplate)

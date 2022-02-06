@@ -18,7 +18,7 @@ namespace Cms.Content
             return await _repos.Create(contentData);
         }
 
-        public async Task<ContentData> Get(Guid id)
+        public async Task<ContentData?> Get(Guid id)
         {
             return await _repos.Get(id);
         }

@@ -3,7 +3,7 @@ using Dapper;
 
 namespace Cms.ContentTemplate
 {
-    public class ContentTemplateRepos : PostgreSQLQueryableRepository<ContentTemplateAggregate, int>
+    public class ContentTemplateRepos : QueryableRepository<ContentTemplateAggregate, int>
     {
         public ContentTemplateRepos(IConfiguration configuration) : base(configuration)
         {
@@ -23,7 +23,7 @@ namespace Cms.ContentTemplate
             throw new NotImplementedException();
         }
 
-        public override async Task<ContentTemplateAggregate> Get(int id)
+        public override async Task<ContentTemplateAggregate?> Get(int id)
         {
             var statement = "SELECT * FROM content_template WHERE id = @id";
             var conn = GetConnection();

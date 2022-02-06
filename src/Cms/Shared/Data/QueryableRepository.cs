@@ -1,45 +1,39 @@
-﻿using Npgsql;
+﻿
+using MySqlConnector;
 using System.Data.Common;
 
 namespace Cms.Shared
 {
-    public abstract class PostgreSQLQueryableRepository<T, TId> : IDisposable, IQueryableRepos<T, TId> where T : IEntity<TId>
+    public abstract class QueryableRepository<T, TId> : IDisposable, IQueryableRepos<T, TId> where T : IEntity<TId>
     {
-        private NpgsqlConnection? _connection;
+        private DbConnection? _connection;
         private object _locker = new object();
-        private DbTransaction _transaction;
+        private DbTransaction? _transaction;
 
         protected IConfiguration Configuration {  get; }
 
-        protected DbTransaction Transaction => _transaction;
+        protected DbTransaction? Transaction => _transaction;
 
-        protected PostgreSQLQueryableRepository(IConfiguration configuration)
+        protected QueryableRepository(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
         public abstract Task<T> Create(T item);
 
-
+        
         public abstract Task<bool> Delete(TId item);
 
 
-        public abstract Task<T> Get(TId id);
+        public abstract Task<T?> Get(TId id);
 
 
         public virtual async Task<IQueryResult<ICollection<T>>> QueryforMany(IEntityCollectionQuery<T, TId> queryProvider)
         {
             var conn = GetConnection();
-            return await queryProvider.Query(conn, new List<object>());
+            return await queryProvider.Query(conn);
             
         }
-
-        public async  Task<IQueryResult<ICollection<T>>> QueryforMany<TArg>(IEntityCollectionQuery<T, TId> queryProvider, IEnumerable<TArg> args)
-        {
-            var conn = GetConnection();
-            return await queryProvider.Query(conn,args);
-        }
-
 
         public virtual async Task<IQueryResult<IEntity<TId>>> QueryforSingle(IEntityQuery<T, TId> queryProvider)
         {
@@ -59,8 +53,8 @@ namespace Cms.Shared
             lock (_locker)
             {
                 var configSection = Configuration.GetSection("EVOLVIT");
-                var connString = $"Server={configSection["host"]};Port=5432;Database=evolvit;User Id={configSection["User"]};Password={configSection["Password"]};";
-                _connection = new NpgsqlConnection(connString);
+                var connString = $"Server={configSection["host"]};Port=3306;Database=evolvit;User Id={configSection["User"]};Password={configSection["Password"]};";
+                _connection = new MySqlConnection(connString);
                 return _connection;
             }
           
@@ -76,15 +70,15 @@ namespace Cms.Shared
             return _transaction;
         }
 
-        public void With(DbConnection connection, DbTransaction transaction = null)
+        public void With(DbConnection connection, DbTransaction? transaction = null)
         {
             lock (_locker)
             {
-                if (connection == null || connection.GetType() != typeof(NpgsqlConnection))
+                if (connection == null || connection.GetType() != typeof( MySqlConnection))
                 {
-                    throw new ArgumentException($"connection cannot be null and must type {nameof(NpgsqlConnection)}");
+                    throw new ArgumentException($"connection cannot be null and must type {nameof( MySqlConnection)}");
                 }
-                _connection = (NpgsqlConnection)connection;
+                _connection = ( MySqlConnection)connection;
                 if(transaction != null)
                 {
                     _transaction = transaction;

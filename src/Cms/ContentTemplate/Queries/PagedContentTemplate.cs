@@ -23,7 +23,7 @@ namespace Cms.ContentTemplate.Queries
         public int PageNumber { get; private set; } = 1;
 
 
-        public async Task<IQueryResult<ICollection<ContentTemplateAggregate>>> Query<T>(IDbConnection connection, IEnumerable<T> args)
+        public async Task<IQueryResult<ICollection<ContentTemplateAggregate>>> Query(IDbConnection connection)
         {
             using var conn = _contentFieldRepos.GetConnection();
             _contentFieldRepos.With(conn);

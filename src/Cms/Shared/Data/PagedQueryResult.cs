@@ -2,7 +2,7 @@
 {
     public record PagedQueryResult<TEntity,TId> : IQueryResult<ICollection<TEntity>> where TEntity : IEntity<TId>
     {
-        public PagedQueryResult(ICollection<TEntity>? result, bool success, int pageSize, int pageNumber)
+        public PagedQueryResult(ICollection<TEntity> result, bool success, int pageSize, int pageNumber)
         {
             Result = result;
             PageSize = pageSize;
@@ -10,7 +10,7 @@
             Success = success;
         }
 
-        public ICollection<TEntity>? Result { get;}
+        public ICollection<TEntity> Result { get;}
         
         public bool Success { get ; }
 

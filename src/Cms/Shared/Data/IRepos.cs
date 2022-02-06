@@ -6,7 +6,7 @@ namespace Cms.Shared
     {
         Task<T> Create(T item);
 
-        Task<T> Get(TId id);
+        Task<T?> Get(TId id);
 
         Task<T> Update(T item);
 
@@ -14,7 +14,7 @@ namespace Cms.Shared
 
         DbConnection GetConnection();
 
-        void With(DbConnection connection, DbTransaction transaction = null);
+        void With(DbConnection connection, DbTransaction? transaction = null);
 
         Task<DbTransaction> WithTransaction();
     }

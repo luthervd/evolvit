@@ -10,7 +10,7 @@ namespace Cms.Content
 
         public string? Description { get; set; }
 
-        public Guid ContentTemplateId { get; set; }
+        public ICollection<string> Tags { get; set;  } = new List<string>();
 
         public IEnumerable<CmsContentField>  Data { get; set; } = new List<CmsContentField>();
 
