@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+    auth:
+      build: ../src/Auth/.
+      ports:
+        - "8000:80"
+      depends_on:
+        - db
+    content-area:
+      build: ../src/Cms/.
+      ports:
+        - "8001:80"
+      depends_on:
+        - db
+    db:
+       image: "postgres:latest"
+       restart: always
+       environment:
+         POSTGRES_PASSWORD: password

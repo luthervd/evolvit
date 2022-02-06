@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  cms:
+    image: ${DOCKER_REGISTRY-}cms
+    build:
+      context: .
+      dockerfile: src/Cms/Dockerfile
+    environment:
+      EVOLVIT__User: evolvitAdmin
+      EVOLVIT__Password: password
+      EVOLVIT__Host: db
+    ports:
+     - "32000:80"
+     - "32001:443"
+    depends_on:
+      - db
+  auth:
+    image: ${DOCKER_REGISTRY-}auth
+    build:
+      context: .
+      dockerfile: src/Auth/Dockerfile
+    depends_on:
+      - db
+  db:
+    image: "postgres:latest"
+    restart: always
+    environment:
+        POSTGRES_USER: evolvitAdmin
+        POSTGRES_PASSWORD: password
+        POSTGRES_DB: evolvit
+    ports:
+      - 5432:5432
+  adminer:
+    image: "dpage/pgadmin4"
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "dev@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+    ports:
+      - 8080:80
