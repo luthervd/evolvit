@@ -15,10 +15,16 @@ namespace Cms.Content
 
         public async Task<ContentData> Create(ContentData contentData)
         {
+            contentData.Id = Guid.NewGuid();
             return await _repos.Create(contentData);
         }
 
         public async Task<ContentData?> Get(Guid id)
+        {
+            return await _repos.Get(id);
+        }
+
+        public async Task<ContentData?> GetContent(Guid id)
         {
             return await _repos.Get(id);
         }
@@ -37,6 +43,12 @@ namespace Cms.Content
             _queryProvider.RegisterPageArgs(pageNumber, pageSize);
             var result = await _repos.QueryforMany(_queryProvider);
             return result.Result;
+        }
+
+        public async Task<ContentData?> Update(ContentData contentData)
+        {
+            var result = await _repos.Update(contentData);
+            return result;
         }
     }
 }

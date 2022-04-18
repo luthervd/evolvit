@@ -4,11 +4,11 @@ using Cms.Migrations;
 using Cms.Shared;
 using Cms.ContentTemplate;
 
-#if DEBUG
-Console.WriteLine("Seeding db");
-    SeedDatabase.RunMigrations();
-    Console.WriteLine("Done seeding");
-#endif
+
+Console.WriteLine("Running migrations");
+SeedDatabase.RunMigrations();
+Console.WriteLine("Done migrating");
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +52,5 @@ app.UseAuthorization();
 app.UseCors();
 
 app.MapControllers();
-
 
 app.Run();

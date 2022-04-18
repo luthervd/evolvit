@@ -7,5 +7,7 @@
         public string? Description { get; set; }
 
         public CmsType CmsType { get; set; }
+
+        public string Value { get; set; } = string.Empty;
     }
 }

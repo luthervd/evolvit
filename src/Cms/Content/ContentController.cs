@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Cms.Content
 {
@@ -21,9 +22,27 @@ namespace Cms.Content
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPaged([FromQuery]int pageSize,[FromQuery]int pageNumber)
+        public async Task<IActionResult> GetPaged([FromQuery] int pageSize, [FromQuery] int pageNumber)
         {
             var result = await _contentService.GetPaged(pageNumber, pageSize);
+            return Ok(result);
+        }
+        
+        [HttpGet, Route("{id}")]
+        public async Task<IActionResult> GetForId(Guid id)
+        {
+            var content = await _contentService.Get(id);
+            if(content == null)
+            {
+                return StatusCode(204);
+            }
+            return Ok(content);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] ContentData content)
+        {
+            var result = await _contentService.Update(content);
             return Ok(result);
         }
 

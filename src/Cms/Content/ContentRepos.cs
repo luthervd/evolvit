@@ -1,6 +1,7 @@
 ﻿using Cms.Shared;
 using Dapper;
 using System.Text.Json;
+using System.Linq;
 
 namespace Cms.Content
 {
@@ -26,14 +27,29 @@ namespace Cms.Content
             throw new NotImplementedException();
         }
 
-        public override Task<ContentData> Get(Guid id)
+        public override async Task<ContentData?> Get(Guid id)
         {
-            throw new NotImplementedException();
+            using (var conn = GetConnection())
+            {
+                var query = $"SELECT * FROM content WHERE id = '{id}'";
+                var result = await conn.QueryAsync(query);
+                var item = result.FirstOrDefault();
+                return item != null ? new ContentData
+                {
+                    Id = item.id,
+                    Name = item.name,
+                    Description = item.description,
+                    Data = JsonSerializer.Deserialize<List<CmsContentField>>(item.data)
+                } :  null;
+            }
         }
 
-        public override Task<ContentData> Update(ContentData item)
+        public override async Task<ContentData> Update(ContentData item)
         {
-            throw new NotImplementedException();
+            var query = $"UPDATE content SET name = {item.Name},description = {item.Description},data = {item.Data} WEHRE id = '{item.Id}'";
+            using var conn = GetConnection();
+            var result = await conn.ExecuteAsync(query);
+            return item;
         }
     }
 }
